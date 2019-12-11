@@ -1,0 +1,3 @@
+﻿  Advent of code.cpp
+D:\Documents\CreationOfStuff\C++\Advent-of-code-2019\Advent of code\Advent of code.cpp(82,6): warning C4101: 'newActionArray': unreferenced local variable
+  Advent of code.vcxproj -> D:\Documents\CreationOfStuff\C++\Advent-of-code-2019\x64\Debug\Advent of code.exe

@@ -6,6 +6,84 @@
 
 #define MAX_STRING 161
 
+
+struct coordinate {
+	int x, y;
+};
+struct wire {
+	coordinate currentCoordinate;
+	coordinate newCoordinate;
+	char sideToCheck;
+	bool isCrossed(wire* checkedArray) {
+		int differenceBetweenPointsChecked;
+		int differenceBetweenPointsThis;
+
+		if (checkedArray->currentCoordinate.y < checkedArray->newCoordinate.y) {
+			differenceBetweenPointsChecked = checkedArray->currentCoordinate.y - checkedArray->newCoordinate.y;
+		}
+		else {
+			differenceBetweenPointsChecked = checkedArray->currentCoordinate.y - checkedArray->newCoordinate.y;
+		}
+		if (this->currentCoordinate.y < this->newCoordinate.y) {
+			differenceBetweenPointsThis = this->currentCoordinate.y + this->newCoordinate.y;
+		}
+		else {
+			differenceBetweenPointsThis = this->currentCoordinate.y - this->newCoordinate.y;
+		}
+		std::cout << checkedArray->currentCoordinate.y - checkedArray->newCoordinate.y << std::endl;
+		std::cout << this->currentCoordinate.y - this->newCoordinate.y << std::endl;
+		std::cout << std::endl;
+
+		for (int checkedValue = 0; checkedValue < differenceBetweenPointsChecked; checkedValue++) {
+			for (int thisValue = 0; thisValue < differenceBetweenPointsThis; thisValue++) {
+				if (this->sideToCheck == 'L' && checkedArray->sideToCheck == 'U') {
+					if (this->currentCoordinate.x - thisValue == checkedArray->currentCoordinate.x && this->currentCoordinate.y == checkedArray->currentCoordinate.y + checkedValue) {
+						return true;
+					}
+				}
+				else if (this->sideToCheck == 'L' && checkedArray->sideToCheck == 'D') {
+					if (this->currentCoordinate.x - thisValue == checkedArray->currentCoordinate.x && this->currentCoordinate.y == checkedArray->currentCoordinate.y - checkedValue) {
+						return true;
+					}
+				}
+				if (this->sideToCheck == 'R' && checkedArray->sideToCheck == 'U') {
+					if (this->currentCoordinate.x + thisValue == checkedArray->currentCoordinate.x && this->currentCoordinate.y == checkedArray->currentCoordinate.y + checkedValue) {
+						return true;
+					}
+				}
+				else if (this->sideToCheck == 'R' && checkedArray->sideToCheck == 'D') {
+					if (this->currentCoordinate.x + thisValue == checkedArray->currentCoordinate.x && this->currentCoordinate.y == checkedArray->currentCoordinate.y - checkedValue) {
+						return true;
+					}
+				}
+				if (this->sideToCheck == 'U' && checkedArray->sideToCheck == 'L') {
+					if (this->currentCoordinate.x == checkedArray->currentCoordinate.x - checkedValue && this->currentCoordinate.y + thisValue == checkedArray->currentCoordinate.y) {
+						return true;
+					}
+				}
+				else if (this->sideToCheck == 'U' && checkedArray->sideToCheck == 'R') {
+					if (this->currentCoordinate.x == checkedArray->currentCoordinate.x + checkedValue && this->currentCoordinate.y + thisValue == checkedArray->currentCoordinate.y) {
+						return true;
+					}
+				}
+				if (this->sideToCheck == 'D' && checkedArray->sideToCheck == 'L') {
+					if (this->currentCoordinate.x == checkedArray->currentCoordinate.x - checkedValue && this->currentCoordinate.y - thisValue == checkedArray->currentCoordinate.y) {
+						return true;
+					}
+				}
+				else if (this->sideToCheck == 'D' && checkedArray->sideToCheck == 'R') {
+					if (this->currentCoordinate.x == checkedArray->currentCoordinate.x + checkedValue && this->currentCoordinate.y - thisValue == checkedArray->currentCoordinate.y) {
+						return true;
+					}
+				}
+			}
+		}
+		
+
+		return false;
+	}
+};
+
 int main()
 {
 	// Day one in/out
@@ -17,8 +95,12 @@ int main()
 	std::ofstream outputOfCodes("data/output/outputOfCodes.txt");
 
 	// Day three in/out
-	if (!inputFile.is_open() || !inputOfCodes.is_open() || !outputFile.is_open() || !outputOfCodes.is_open()) {
-		throw std::runtime_error("ERROR: FILES DIDN'T OPEN!");
+	std::ifstream inputWires("data/input/inputWires.txt");
+	std::ofstream outputWires("data/output/outputWires.txt");
+
+	if (!inputFile.is_open() || !inputOfCodes.is_open() || !inputWires.is_open()) {
+		std::cout << "Error opening files! Program aborted." << std::endl;
+		return -1;
 	}
 
 
@@ -132,8 +214,77 @@ int main()
 		}
 	}
 
+	// DAY THREE:
+	std::string textInputOfWires;
+	int lineNumberOfWires = 0;
+	int wireNumber = 0;
+	wire defaultWireArray[2][20];
+	while (std::getline(inputWires, textInputOfWires)) {
+		std::stringstream wiresLineStream(textInputOfWires);
+		std::string textOfWiresCodesSmallText;
+		coordinate* currentCoord = new coordinate();
+		currentCoord->x = 0;
+		currentCoord->y = 0;
 
-	// MAKE NEW AND OLD ARRAY ^^
+		while (std::getline(wiresLineStream, textOfWiresCodesSmallText, ',')) {
+			wire newWire;
+
+			newWire.sideToCheck = textOfWiresCodesSmallText[0];
+			textOfWiresCodesSmallText.erase(0, 1);
+
+			newWire.currentCoordinate = *currentCoord;
+
+			switch (newWire.sideToCheck)
+			{
+			case 'L':
+				currentCoord->x -= std::stoi(textOfWiresCodesSmallText);
+				break;
+			case 'R':
+				currentCoord->x += std::stoi(textOfWiresCodesSmallText);
+				break;
+			case 'U':
+				currentCoord->y += std::stoi(textOfWiresCodesSmallText);
+				break;
+			case 'D':
+				currentCoord->y -= std::stoi(textOfWiresCodesSmallText);
+				break;
+			default:
+				std::cout << "ERROR: Unknown character!" << std::endl;
+				system("pause");
+				break;
+			}
+			std::cout << currentCoord->x << ", " << currentCoord->y << std::endl;
+			newWire.newCoordinate = *currentCoord;
+
+			defaultWireArray[wireNumber][lineNumberOfWires] = newWire;
+
+			lineNumberOfWires++;
+		}
+		wireNumber++;
+		std::cout << lineNumberOfWires << std::endl;
+	}
+	std::cout << std::endl;
+	for (int i = 0; i < 20; i++) {
+		wire* currentWire = &defaultWireArray[0][i];
+		if (currentWire->currentCoordinate.x == -858993460) {
+			std::cout << "Error: no value added to coordinate!" << std::endl;
+			break;
+		}
+		else {
+			for (int j = 0; j < 20; j++) {
+				wire* checkWire = &defaultWireArray[1][j];
+				if (checkWire->currentCoordinate.x != -858993460) {
+					if (currentWire->isCrossed(checkWire)) {
+						std::cout << "Found a cross point" << std::endl;
+					}
+				}
+			}
+		}
+	}
+
+
+	// Check for side (Wires are always 1D, they don't change sides. if it's not working try the MAP approach to this problem (map with coordinates, can check if coordinate is already set or not))
+
 
 	inputFile.close();
 	inputOfCodes.close();

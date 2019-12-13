@@ -1,2 +1,3 @@
 ﻿  Advent of code.cpp
-  Advent of code.vcxproj -> F:\Documents\Creation of stuff\C++\Advent-of-code-2019\x64\Debug\Advent of code.exe
+D:\Documents\CreationOfStuff\C++\Advent-of-code-2019\Advent of code\Advent of code.cpp(133): warning C6001: Using uninitialized memory 'defaultActionArray'.: Lines: 68, 69, 72, 73, 76, 77, 79, 85, 86, 87, 88, 90, 91, 109, 111, 113, 115, 116, 117, 118, 128, 129, 130, 131, 132, 133
+  Advent of code.vcxproj -> D:\Documents\CreationOfStuff\C++\Advent-of-code-2019\x64\Debug\Advent of code.exe

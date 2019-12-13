@@ -3,85 +3,64 @@
 #include <string>
 #include <sstream>
 #include <Windows.h>
+#include <vector>
 
 #define MAX_STRING 161
+#define MAP_SIZE 1500
 
 
 struct coordinate {
 	int x, y;
 };
-struct wire {
+class wire {
+public:
 	coordinate currentCoordinate;
 	coordinate newCoordinate;
-	char sideToCheck;
-	bool isCrossed(wire* checkedArray) {
-		int differenceBetweenPointsChecked;
-		int differenceBetweenPointsThis;
+	char sideCheck;
+	int makeLine(world* map) {
+		this->calcDifferenceCoordinate();
+		if (this->sideCheck == 'L' || this->sideCheck == 'R') {
+			for (int i = 0; i < difference.x; i++) {
 
-		if (checkedArray->currentCoordinate.y < checkedArray->newCoordinate.y) {
-			differenceBetweenPointsChecked = checkedArray->currentCoordinate.y - checkedArray->newCoordinate.y;
-		}
-		else {
-			differenceBetweenPointsChecked = checkedArray->currentCoordinate.y - checkedArray->newCoordinate.y;
-		}
-		if (this->currentCoordinate.y < this->newCoordinate.y) {
-			differenceBetweenPointsThis = this->currentCoordinate.y + this->newCoordinate.y;
-		}
-		else {
-			differenceBetweenPointsThis = this->currentCoordinate.y - this->newCoordinate.y;
-		}
-		std::cout << checkedArray->currentCoordinate.y - checkedArray->newCoordinate.y << std::endl;
-		std::cout << this->currentCoordinate.y - this->newCoordinate.y << std::endl;
-		std::cout << std::endl;
-
-		for (int checkedValue = 0; checkedValue < differenceBetweenPointsChecked; checkedValue++) {
-			for (int thisValue = 0; thisValue < differenceBetweenPointsThis; thisValue++) {
-				if (this->sideToCheck == 'L' && checkedArray->sideToCheck == 'U') {
-					if (this->currentCoordinate.x - thisValue == checkedArray->currentCoordinate.x && this->currentCoordinate.y == checkedArray->currentCoordinate.y + checkedValue) {
-						return true;
-					}
-				}
-				else if (this->sideToCheck == 'L' && checkedArray->sideToCheck == 'D') {
-					if (this->currentCoordinate.x - thisValue == checkedArray->currentCoordinate.x && this->currentCoordinate.y == checkedArray->currentCoordinate.y - checkedValue) {
-						return true;
-					}
-				}
-				if (this->sideToCheck == 'R' && checkedArray->sideToCheck == 'U') {
-					if (this->currentCoordinate.x + thisValue == checkedArray->currentCoordinate.x && this->currentCoordinate.y == checkedArray->currentCoordinate.y + checkedValue) {
-						return true;
-					}
-				}
-				else if (this->sideToCheck == 'R' && checkedArray->sideToCheck == 'D') {
-					if (this->currentCoordinate.x + thisValue == checkedArray->currentCoordinate.x && this->currentCoordinate.y == checkedArray->currentCoordinate.y - checkedValue) {
-						return true;
-					}
-				}
-				if (this->sideToCheck == 'U' && checkedArray->sideToCheck == 'L') {
-					if (this->currentCoordinate.x == checkedArray->currentCoordinate.x - checkedValue && this->currentCoordinate.y + thisValue == checkedArray->currentCoordinate.y) {
-						return true;
-					}
-				}
-				else if (this->sideToCheck == 'U' && checkedArray->sideToCheck == 'R') {
-					if (this->currentCoordinate.x == checkedArray->currentCoordinate.x + checkedValue && this->currentCoordinate.y + thisValue == checkedArray->currentCoordinate.y) {
-						return true;
-					}
-				}
-				if (this->sideToCheck == 'D' && checkedArray->sideToCheck == 'L') {
-					if (this->currentCoordinate.x == checkedArray->currentCoordinate.x - checkedValue && this->currentCoordinate.y - thisValue == checkedArray->currentCoordinate.y) {
-						return true;
-					}
-				}
-				else if (this->sideToCheck == 'D' && checkedArray->sideToCheck == 'R') {
-					if (this->currentCoordinate.x == checkedArray->currentCoordinate.x + checkedValue && this->currentCoordinate.y - thisValue == checkedArray->currentCoordinate.y) {
-						return true;
-					}
-				}
 			}
 		}
-		
+		else if (this->sideCheck == 'U' || this->sideCheck == 'D') {
+			for (int i = 0; i < difference.y; i++) {
 
-		return false;
+			}
+		}
 	}
+private:
+	coordinate difference = {0, 0};
+	int calcDifferenceCoordinate() {
+		switch (this->sideCheck)
+		{
+		case 'U':
+			this->difference.y = this->newCoordinate.y - this->currentCoordinate.y;
+			break;
+		case 'D':
+			this->difference.y = this->newCoordinate.y - this->currentCoordinate.y;
+			break;
+		case 'L':
+			this->difference.x = this->newCoordinate.x - this->currentCoordinate.x;
+			break;
+		case 'R':
+			this->difference.x = this->newCoordinate.x - this->currentCoordinate.x;
+			break;
+		default:
+			std::cout << "ERROR: No value compatible!" << std::endl;
+			break;
+		}
+		std::cout << "(" << this->difference.x << ", " << this->difference.y << ")" << std::endl;
+	}
+};
+class world {
+public:
+	char display = '.';
+	coordinate loc;
+	bool isCrossed = false;
+	bool isX = false;
+	wire currentWire;
 };
 
 int main()
@@ -218,23 +197,39 @@ int main()
 	std::string textInputOfWires;
 	int lineNumberOfWires = 0;
 	int wireNumber = 0;
-	wire defaultWireArray[2][20];
+	std::vector<std::vector<world> >map(MAP_SIZE, std::vector<world>(MAP_SIZE));
+
+	std::cout << "Creating map..." << std::endl;
+	for (int x = 0; x < MAP_SIZE; x++) {
+		for (int y = 0; y < MAP_SIZE; y++) {
+			world tempWorld;
+			tempWorld.loc = { x, y };
+			tempWorld.isCrossed = false;
+			wire tempWire;
+			tempWorld.currentWire = tempWire;
+			map[x][y] = tempWorld;
+		}
+	}
+	std::cout << "Created maps succesfully! Starting to read wire input..." << std::endl;
+
 	while (std::getline(inputWires, textInputOfWires)) {
 		std::stringstream wiresLineStream(textInputOfWires);
 		std::string textOfWiresCodesSmallText;
 		coordinate* currentCoord = new coordinate();
-		currentCoord->x = 0;
-		currentCoord->y = 0;
+		currentCoord->x = MAP_SIZE / 2;
+		currentCoord->y = MAP_SIZE / 2;
 
 		while (std::getline(wiresLineStream, textOfWiresCodesSmallText, ',')) {
+			world newWorld;
 			wire newWire;
+			coordinate oldCoordinate = *currentCoord;
 
-			newWire.sideToCheck = textOfWiresCodesSmallText[0];
+			newWire.sideCheck = textOfWiresCodesSmallText[0];
 			textOfWiresCodesSmallText.erase(0, 1);
 
 			newWire.currentCoordinate = *currentCoord;
 
-			switch (newWire.sideToCheck)
+			switch (newWire.sideCheck)
 			{
 			case 'L':
 				currentCoord->x -= std::stoi(textOfWiresCodesSmallText);
@@ -256,7 +251,10 @@ int main()
 			std::cout << currentCoord->x << ", " << currentCoord->y << std::endl;
 			newWire.newCoordinate = *currentCoord;
 
-			defaultWireArray[wireNumber][lineNumberOfWires] = newWire;
+			newWorld.currentWire = newWire;
+			newWorld.loc = *currentCoord;
+			newWorld.isX = true;
+			map[oldCoordinate.x][oldCoordinate.y] = newWorld;
 
 			lineNumberOfWires++;
 		}
@@ -264,25 +262,24 @@ int main()
 		std::cout << lineNumberOfWires << std::endl;
 	}
 	std::cout << std::endl;
-	for (int i = 0; i < 20; i++) {
-		wire* currentWire = &defaultWireArray[0][i];
-		if (currentWire->currentCoordinate.x == -858993460) {
-			std::cout << "Error: no value added to coordinate!" << std::endl;
-			break;
-		}
-		else {
-			for (int j = 0; j < 20; j++) {
-				wire* checkWire = &defaultWireArray[1][j];
-				if (checkWire->currentCoordinate.x != -858993460) {
-					if (currentWire->isCrossed(checkWire)) {
-						std::cout << "Found a cross point" << std::endl;
-					}
-				}
+
+	std::cout << "Drawing lines..." << std::endl;
+	for (int x = 0; x < MAP_SIZE; x++) {
+		for (int y = 0; y < MAP_SIZE; y++) {
+			if (map[x][y].isX) {
+				map[x][y].currentWire.makeLine(&map);
 			}
 		}
 	}
 
-
+	std::cout << "Drawing map..." << std::endl;
+	for (int x = 0; x < MAP_SIZE; x++) {
+		for (int y = 0; y < MAP_SIZE; y++) {
+			outputWires << map[x][y].display;
+		}
+		outputWires << "\n";
+	}
+	std::cout << "Drew map succesfully!" << std::endl;
 	// Check for side (Wires are always 1D, they don't change sides. if it's not working try the MAP approach to this problem (map with coordinates, can check if coordinate is already set or not))
 
 

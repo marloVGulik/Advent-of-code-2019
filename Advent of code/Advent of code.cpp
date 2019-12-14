@@ -1,67 +1,66 @@
-#include <iostream>
-#include <fstream>
-#include <string>
-#include <sstream>
-#include <Windows.h>
-#include <vector>
-
-#define MAX_STRING 161
-#define MAP_SIZE 1500
-
+#include "main.hpp";
 
 struct coordinate {
 	int x, y;
 };
-class wire {
-public:
-	coordinate currentCoordinate;
-	coordinate newCoordinate;
-	char sideCheck;
-	int makeLine(world* map) {
-		this->calcDifferenceCoordinate();
-		if (this->sideCheck == 'L' || this->sideCheck == 'R') {
-			for (int i = 0; i < difference.x; i++) {
-
-			}
-		}
-		else if (this->sideCheck == 'U' || this->sideCheck == 'D') {
-			for (int i = 0; i < difference.y; i++) {
-
-			}
-		}
-	}
-private:
-	coordinate difference = {0, 0};
-	int calcDifferenceCoordinate() {
-		switch (this->sideCheck)
-		{
-		case 'U':
-			this->difference.y = this->newCoordinate.y - this->currentCoordinate.y;
-			break;
-		case 'D':
-			this->difference.y = this->newCoordinate.y - this->currentCoordinate.y;
-			break;
-		case 'L':
-			this->difference.x = this->newCoordinate.x - this->currentCoordinate.x;
-			break;
-		case 'R':
-			this->difference.x = this->newCoordinate.x - this->currentCoordinate.x;
-			break;
-		default:
-			std::cout << "ERROR: No value compatible!" << std::endl;
-			break;
-		}
-		std::cout << "(" << this->difference.x << ", " << this->difference.y << ")" << std::endl;
-	}
-};
 class world {
 public:
-	char display = '.';
-	coordinate loc;
+	char display = ' ';
+	coordinate loc = {0, 0};
+	coordinate difference = {0, 0};
+	char sideCheck = ' ';
+
+	int wireNumber = 0;
 	bool isCrossed = false;
 	bool isX = false;
-	wire currentWire;
 };
+
+bool crossed(world* hostWorld, std::vector<world> checkedWorld) {
+	for (int wordNumber = 0; wordNumber < 20; wordNumber++) {
+		std::cout << checkedWorld[wordNumber].sideCheck << std::endl;
+		std::cout << hostWorld->sideCheck << std::endl;
+		switch (checkedWorld[wordNumber].sideCheck)
+		{
+		case 'L':
+			for (int drawLineNumber = 0; drawLineNumber < checkedWorld[wordNumber].difference.x * -1; drawLineNumber++) {
+				if (hostWorld->loc.x == checkedWorld[wordNumber].loc.x - drawLineNumber && hostWorld->loc.y == checkedWorld[wordNumber].loc.y) {
+					std::cout << "Crossed at: " << checkedWorld[wordNumber].loc.x << ", " << checkedWorld[wordNumber].loc.y << std::endl;
+					return true;
+				}
+			}
+			break;
+		case 'R':
+			for (int drawLineNumber = 0; drawLineNumber < checkedWorld[wordNumber].difference.x; drawLineNumber++) {
+				if (hostWorld->loc.x == checkedWorld[wordNumber].loc.x + drawLineNumber && hostWorld->loc.y == checkedWorld[wordNumber].loc.y) {
+					std::cout << "Crossed at: " << checkedWorld[wordNumber].loc.x << ", " << checkedWorld[wordNumber].loc.y << std::endl;
+					return true;
+				}
+			}
+			break;
+		case 'D':
+			for (int drawLineNumber = 0; drawLineNumber < checkedWorld[wordNumber].difference.y * -1; drawLineNumber++) {
+				if (hostWorld->loc.x == checkedWorld[wordNumber].loc.x && hostWorld->loc.y == checkedWorld[wordNumber].loc.y - drawLineNumber) {
+					std::cout << "Crossed at: " << checkedWorld[wordNumber].loc.x << ", " << checkedWorld[wordNumber].loc.y << std::endl;
+					return true;
+				}
+			}
+			break;
+		case 'U':
+			for (int drawLineNumber = 0; drawLineNumber < checkedWorld[wordNumber].difference.y; drawLineNumber++) {
+				if (hostWorld->loc.x == checkedWorld[wordNumber].loc.x && hostWorld->loc.y == checkedWorld[wordNumber].loc.y + drawLineNumber) {
+					std::cout << "Crossed at: " << checkedWorld[wordNumber].loc.x << ", " << checkedWorld[wordNumber].loc.y << std::endl;
+					return true;
+				}
+			}
+			break;
+		default:
+			std::cout << "ERROR NO COMPATIBLE CHARACTER" << std::endl;
+			system("pause");
+			break;
+		}
+	}
+	return false;
+}
 
 int main()
 {
@@ -194,94 +193,291 @@ int main()
 	}
 
 	// DAY THREE:
-	std::string textInputOfWires;
-	int lineNumberOfWires = 0;
-	int wireNumber = 0;
-	std::vector<std::vector<world> >map(MAP_SIZE, std::vector<world>(MAP_SIZE));
+	bool CALCMODE = true;
+	bool DRAWMODE = false;
 
-	std::cout << "Creating map..." << std::endl;
-	for (int x = 0; x < MAP_SIZE; x++) {
-		for (int y = 0; y < MAP_SIZE; y++) {
-			world tempWorld;
-			tempWorld.loc = { x, y };
-			tempWorld.isCrossed = false;
-			wire tempWire;
-			tempWorld.currentWire = tempWire;
-			map[x][y] = tempWorld;
-		}
-	}
-	std::cout << "Created maps succesfully! Starting to read wire input..." << std::endl;
+	// TEST:
+	if (CALCMODE) {
+		std::string textInputOfWires;
+		coordinate currentLoc = { 0, 0 };
+		coordinate maxLoc = { 0, 0 };
+		std::vector<std::vector<world> >map(2, std::vector<world>(20));
+		std::cout << "Created array, filling with data" << std::endl;
 
-	while (std::getline(inputWires, textInputOfWires)) {
-		std::stringstream wiresLineStream(textInputOfWires);
-		std::string textOfWiresCodesSmallText;
-		coordinate* currentCoord = new coordinate();
-		currentCoord->x = MAP_SIZE / 2;
-		currentCoord->y = MAP_SIZE / 2;
+		int lineCounter = 0;
+		int objectCounter = 0;
+		while (std::getline(inputWires, textInputOfWires)) {
+			std::stringstream wiresLineStream(textInputOfWires);
+			std::string textOfWiresSmallText;
 
-		while (std::getline(wiresLineStream, textOfWiresCodesSmallText, ',')) {
-			world newWorld;
-			wire newWire;
-			coordinate oldCoordinate = *currentCoord;
+			while (std::getline(wiresLineStream, textOfWiresSmallText, ',')) {
+				char side = textOfWiresSmallText[0];
+				textOfWiresSmallText.erase(0, 1);
+				int amount = std::stoi(textOfWiresSmallText);
+				coordinate translation = { 0, 0 };
 
-			newWire.sideCheck = textOfWiresCodesSmallText[0];
-			textOfWiresCodesSmallText.erase(0, 1);
+				map[lineCounter][objectCounter].sideCheck = side;
 
-			newWire.currentCoordinate = *currentCoord;
+				switch (side)
+				{
+				case 'L':
+					translation.x -= amount;
+					break;
+				case 'R':
+					translation.x += amount;
+					break;
+				case 'U':
+					translation.y += amount;
+					break;
+				case 'D':
+					translation.y -= amount;
+					break;
+				default:
+					std::cout << "ERROR: Unknown character!" << std::endl;
+					system("pause");
+					break;
+				}
+				map[lineCounter][objectCounter].loc = currentLoc;
+				map[lineCounter][objectCounter].difference = translation;
 
-			switch (newWire.sideCheck)
-			{
-			case 'L':
-				currentCoord->x -= std::stoi(textOfWiresCodesSmallText);
-				break;
-			case 'R':
-				currentCoord->x += std::stoi(textOfWiresCodesSmallText);
-				break;
-			case 'U':
-				currentCoord->y += std::stoi(textOfWiresCodesSmallText);
-				break;
-			case 'D':
-				currentCoord->y -= std::stoi(textOfWiresCodesSmallText);
-				break;
-			default:
-				std::cout << "ERROR: Unknown character!" << std::endl;
-				system("pause");
-				break;
+				objectCounter++;
 			}
-			std::cout << currentCoord->x << ", " << currentCoord->y << std::endl;
-			newWire.newCoordinate = *currentCoord;
-
-			newWorld.currentWire = newWire;
-			newWorld.loc = *currentCoord;
-			newWorld.isX = true;
-			map[oldCoordinate.x][oldCoordinate.y] = newWorld;
-
-			lineNumberOfWires++;
+			lineCounter++;
 		}
-		wireNumber++;
-		std::cout << lineNumberOfWires << std::endl;
-	}
-	std::cout << std::endl;
+		std::cout << "Map read, continue to calc part..." << std::endl;
+		for (int lineNumber = 0; lineNumber < 2; lineNumber++) {
+			for (int wordNumber = 0; wordNumber < 20; wordNumber++) {
+				std::cout << map[lineNumber][wordNumber].sideCheck << std::endl;
+				switch (map[lineNumber][wordNumber].sideCheck)
+				{
+				case 'L':
+					for (int drawLineNumber = 0; drawLineNumber < map[lineNumber][wordNumber].difference.x * -1; drawLineNumber++) {
+						world* newWorld = &map[lineNumber][wordNumber];
+						std::vector<world>* checkWorld = &map[lineNumber * -1 + 1];
+						newWorld->loc.x -= drawLineNumber;
+						if (crossed(newWorld, checkWorld)) {
 
-	std::cout << "Drawing lines..." << std::endl;
-	for (int x = 0; x < MAP_SIZE; x++) {
-		for (int y = 0; y < MAP_SIZE; y++) {
-			if (map[x][y].isX) {
-				map[x][y].currentWire.makeLine(&map);
+							std::cout << "CROSS REEEEEE" << std::endl;
+						}
+						else {
+
+							std::cout << " NO CROSS REEEEEE" << std::endl;
+						}
+					}
+					break;
+				case 'R':
+					for (int drawLineNumber = 0; drawLineNumber < map[lineNumber][wordNumber].difference.x; drawLineNumber++) {
+						world* newWorld = &map[lineNumber][wordNumber];
+						std::vector<world>* checkWorld = &map[lineNumber * -1 + 1];
+						newWorld->loc.x += drawLineNumber;
+						if (crossed(newWorld, map[drawLineNumber])) {
+
+							std::cout << "CROSS REEEEEE" << std::endl;
+						}
+						else {
+
+							std::cout << " NO CROSS REEEEEE" << std::endl;
+						}
+					}
+					break;
+				case 'D':
+					for (int drawLineNumber = 0; drawLineNumber < map[lineNumber][wordNumber].difference.y * -1; drawLineNumber++) {
+						world* newWorld = &map[lineNumber][wordNumber];
+						std::vector<world>* checkWorld = &map[lineNumber * -1 + 1];
+						newWorld->loc.y -= drawLineNumber;
+						if (crossed(newWorld, map[drawLineNumber * -1 + 1])) {
+
+							std::cout << "CROSS REEEEEE" << std::endl;
+						}
+						else {
+
+							std::cout << " NO CROSS REEEEEE" << std::endl;
+						}
+					}
+					break;
+				case 'U':
+					for (int drawLineNumber = 0; drawLineNumber < map[lineNumber][wordNumber].difference.y; drawLineNumber++) {
+						world* newWorld = &map[lineNumber][wordNumber];
+						std::vector<world>* checkWorld = &map[lineNumber * -1 + 1];
+						newWorld->loc.y += drawLineNumber;
+						if (crossed(newWorld, map[drawLineNumber * -1 + 1])) {
+
+							std::cout << "CROSS REEEEEE" << std::endl;
+						}
+						else {
+
+							std::cout << " NO CROSS REEEEEE" << std::endl;
+						}
+					}
+					break;
+				default:
+					std::cout << "ERROR NO COMPATIBLE CHARACTER" << std::endl;
+					system("pause");
+					break;
+				}
 			}
 		}
 	}
 
-	std::cout << "Drawing map..." << std::endl;
-	for (int x = 0; x < MAP_SIZE; x++) {
-		for (int y = 0; y < MAP_SIZE; y++) {
-			outputWires << map[x][y].display;
-		}
-		outputWires << "\n";
-	}
-	std::cout << "Drew map succesfully!" << std::endl;
-	// Check for side (Wires are always 1D, they don't change sides. if it's not working try the MAP approach to this problem (map with coordinates, can check if coordinate is already set or not))
+	if (DRAWMODE) {
+		std::string textInputOfWires;
+		int lineNumberOfWires = 0;
+		int wireNumber = 0;
+		std::cout << "Creating map array..." << std::endl;
+		std::vector<std::vector<world> >map(MAP_SIZE_X, std::vector<world>(MAP_SIZE_Y));
 
+
+		/*std::cout << "Filling map array..." << std::endl;
+		for (int x = 0; x < MAP_SIZE_X; x++) {
+			for (int y = 0; y < MAP_SIZE_Y; y++) {
+				world tempWorld;
+				tempWorld.loc = { x, y };
+				tempWorld.isCrossed = false;
+				map[x][y] = tempWorld;
+			}
+		}*/
+		std::cout << "Created map succesfully! Starting to read wire input and creating starting points..." << std::endl;
+
+		while (std::getline(inputWires, textInputOfWires)) {
+			std::stringstream wiresLineStream(textInputOfWires);
+			std::string textOfWiresCodesSmallText;
+			coordinate* currentCoord = new coordinate();
+			currentCoord->x = 8000;
+			currentCoord->y = 4000;
+
+			lineNumberOfWires = 0;
+			while (std::getline(wiresLineStream, textOfWiresCodesSmallText, ',')) {
+				world newWorld;
+				coordinate oldCoordinate = *currentCoord;
+				coordinate diff = { 0, 0 };
+				//std::cout << currentCoord->x << ", " << currentCoord->y << std::endl;
+
+				newWorld.sideCheck = textOfWiresCodesSmallText[0];
+				textOfWiresCodesSmallText.erase(0, 1);
+
+				switch (newWorld.sideCheck)
+				{
+				case 'L':
+					currentCoord->x -= std::stoi(textOfWiresCodesSmallText);
+					diff.x -= oldCoordinate.x - currentCoord->x;
+					break;
+				case 'R':
+					currentCoord->x += std::stoi(textOfWiresCodesSmallText);
+					diff.x -= oldCoordinate.x - currentCoord->x;
+					break;
+				case 'U':
+					currentCoord->y += std::stoi(textOfWiresCodesSmallText);
+					diff.y -= oldCoordinate.y - currentCoord->y;
+					break;
+				case 'D':
+					currentCoord->y -= std::stoi(textOfWiresCodesSmallText);
+					diff.y -= oldCoordinate.y - currentCoord->y;
+					break;
+				default:
+					std::cout << "ERROR: Unknown character!" << std::endl;
+					system("pause");
+					break;
+				}
+				//std::cout << diff.x << ", " << diff.y << std::endl;
+				std::cout << currentCoord->x << ", " << currentCoord->y << std::endl;
+
+
+
+				newWorld.loc = oldCoordinate;
+				newWorld.difference = diff;
+				newWorld.isX = true;
+				newWorld.display = '+';
+				newWorld.wireNumber = wireNumber + 1;
+
+				/*if (wireNumber != 0 && lineNumberOfWires == 0) {
+					newWorld.isStart = true;
+					newWorld.locStart = map[oldCoordinate.x][oldCoordinate.y].loc;
+				}*/
+
+				map[oldCoordinate.x][oldCoordinate.y] = newWorld;
+
+				lineNumberOfWires++;
+			}
+			wireNumber++;
+			std::cout << lineNumberOfWires << std::endl;
+		}
+		std::cout << std::endl;
+
+		std::cout << "Drawing lines..." << std::endl;
+		for (int x = 0; x < MAP_SIZE_X; x++) {
+			for (int y = 0; y < MAP_SIZE_Y; y++) {
+				if (map[x][y].isX) {
+					if (map[x][y].sideCheck == 'L') {
+						for (int i = 0; i < map[x][y].difference.x * -1; i++) {
+							if (!map[x - i][y].isX) {
+								if (map[x - i][y].display != '-' && map[x - i][y].wireNumber == map[x][y].wireNumber || map[x - i][y].wireNumber == 0) {
+									map[x - i][y].display = '|';
+									map[x - i][y].wireNumber = map[x][y].wireNumber;
+								}
+								else {
+									map[x - i][y].display = 'X';
+								}
+							}
+						}
+					}
+					else if (map[x][y].sideCheck == 'R') {
+						for (int i = 0; i < map[x][y].difference.x; i++) {
+							if (!map[x + i][y].isX) {
+								if (map[x + i][y].display != '-' && map[x + i][y].wireNumber == map[x][y].wireNumber || map[x + i][y].wireNumber == 0) {
+									map[x + i][y].display = '|';
+									map[x + i][y].wireNumber = map[x][y].wireNumber;
+								}
+								else {
+									map[x + i][y].display = 'X';
+								}
+							}
+						}
+					}
+					else if (map[x][y].sideCheck == 'U') {
+						for (int i = 0; i < map[x][y].difference.y; i++) {
+							if (!map[x][y + i].isX) {
+								if (map[x][y + i].display != '|' && map[x][y + i].wireNumber == map[x][y].wireNumber || map[x][y + i].wireNumber == 0) {
+									map[x][y + i].display = '-';
+									map[x][y + i].wireNumber = map[x][y].wireNumber;
+								}
+								else {
+									map[x][y + i].display = 'X';
+								}
+							}
+						}
+					}
+					else if (map[x][y].sideCheck == 'D') {
+						for (int i = 0; i < map[x][y].difference.y * -1; i++) {
+							if (!map[x][y - i].isX) {
+								if (map[x][y - i].display != '|' && map[x][y - i].wireNumber == map[x][y].wireNumber || map[x][y - i].wireNumber == 0) {
+									map[x][y - i].display = '-';
+									map[x][y - i].wireNumber = map[x][y].wireNumber;
+								}
+								else {
+									map[x][y - i].display = 'X';
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+
+		
+		std::cout << "Drawing map..." << std::endl;
+		for (int x = 0; x < MAP_SIZE_X; x++) {
+			for (int y = 0; y < MAP_SIZE_Y; y++) {
+				outputWires << map[x][y].display;
+			}
+			outputWires << "\n";
+		}
+		std::cout << "Drew map succesfully!" << std::endl;
+		std::cout << "Removing the array..." << std::endl;
+		map.clear();
+		system("pause");
+		// Check for side (Wires are always 1D, they don't change sides. if it's not working try the MAP approach to this problem (map with coordinates, can check if coordinate is already set or not))
+	}
+	
 
 	inputFile.close();
 	inputOfCodes.close();

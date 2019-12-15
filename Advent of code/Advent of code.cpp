@@ -15,51 +15,60 @@ public:
 	bool isX = false;
 };
 
-bool crossed(world* hostWorld, std::vector<world> checkedWorld) {
-	for (int wordNumber = 0; wordNumber < 20; wordNumber++) {
-		std::cout << checkedWorld[wordNumber].sideCheck << std::endl;
-		std::cout << hostWorld->sideCheck << std::endl;
+std::vector<coordinate> crossed(world* hostWorld, std::vector<world> &checkedWorld) {
+	//std::cout << "Checking: " << hostWorld->loc.x << ", " << hostWorld->loc.y << std::endl; // FUN LINE XD
+	/*for (int i = 0; i < 20; i++) {
+		std::cout << checkedWorld[i].loc.x << ", " << checkedWorld[i].loc.y << std::endl;
+	}
+	system("pause");*/
+	std::vector<coordinate>crosses;
+	for (int wordNumber = 0; wordNumber < 301; wordNumber++) {
+		/*std::cout << checkedWorld[wordNumber].loc.x << ", " << checkedWorld[wordNumber].loc.y << std::endl;
+		std::cout << hostWorld->loc.x << ", " << hostWorld->loc.y << std::endl;*/
+		//system("pause");
 		switch (checkedWorld[wordNumber].sideCheck)
 		{
 		case 'L':
 			for (int drawLineNumber = 0; drawLineNumber < checkedWorld[wordNumber].difference.x * -1; drawLineNumber++) {
 				if (hostWorld->loc.x == checkedWorld[wordNumber].loc.x - drawLineNumber && hostWorld->loc.y == checkedWorld[wordNumber].loc.y) {
-					std::cout << "Crossed at: " << checkedWorld[wordNumber].loc.x << ", " << checkedWorld[wordNumber].loc.y << std::endl;
-					return true;
+					std::cout << "Crossed at: " << checkedWorld[wordNumber].loc.x - drawLineNumber << ", " << checkedWorld[wordNumber].loc.y << std::endl;
+					crosses.push_back({ checkedWorld[wordNumber].loc.x - drawLineNumber, checkedWorld[wordNumber].loc.y });
 				}
 			}
 			break;
 		case 'R':
 			for (int drawLineNumber = 0; drawLineNumber < checkedWorld[wordNumber].difference.x; drawLineNumber++) {
 				if (hostWorld->loc.x == checkedWorld[wordNumber].loc.x + drawLineNumber && hostWorld->loc.y == checkedWorld[wordNumber].loc.y) {
-					std::cout << "Crossed at: " << checkedWorld[wordNumber].loc.x << ", " << checkedWorld[wordNumber].loc.y << std::endl;
-					return true;
+					std::cout << "Crossed at: " << checkedWorld[wordNumber].loc.x + drawLineNumber << ", " << checkedWorld[wordNumber].loc.y << std::endl;
+					crosses.push_back({ checkedWorld[wordNumber].loc.x + drawLineNumber, checkedWorld[wordNumber].loc.y });
 				}
 			}
 			break;
 		case 'D':
 			for (int drawLineNumber = 0; drawLineNumber < checkedWorld[wordNumber].difference.y * -1; drawLineNumber++) {
 				if (hostWorld->loc.x == checkedWorld[wordNumber].loc.x && hostWorld->loc.y == checkedWorld[wordNumber].loc.y - drawLineNumber) {
-					std::cout << "Crossed at: " << checkedWorld[wordNumber].loc.x << ", " << checkedWorld[wordNumber].loc.y << std::endl;
-					return true;
+					std::cout << "Crossed at: " << checkedWorld[wordNumber].loc.x << ", " << checkedWorld[wordNumber].loc.y - drawLineNumber << std::endl;
+					crosses.push_back({ checkedWorld[wordNumber].loc.x, checkedWorld[wordNumber].loc.y - drawLineNumber });
 				}
 			}
 			break;
 		case 'U':
 			for (int drawLineNumber = 0; drawLineNumber < checkedWorld[wordNumber].difference.y; drawLineNumber++) {
 				if (hostWorld->loc.x == checkedWorld[wordNumber].loc.x && hostWorld->loc.y == checkedWorld[wordNumber].loc.y + drawLineNumber) {
-					std::cout << "Crossed at: " << checkedWorld[wordNumber].loc.x << ", " << checkedWorld[wordNumber].loc.y << std::endl;
-					return true;
+					std::cout << "Crossed at: " << checkedWorld[wordNumber].loc.x << ", " << checkedWorld[wordNumber].loc.y + drawLineNumber << std::endl;
+					crosses.push_back({ checkedWorld[wordNumber].loc.x, checkedWorld[wordNumber].loc.y + drawLineNumber });
 				}
 			}
 			break;
 		default:
-			std::cout << "ERROR NO COMPATIBLE CHARACTER" << std::endl;
-			system("pause");
+
 			break;
 		}
 	}
-	return false;
+	/*for (int i = 0; i < crosses.size(); i++) {
+		std::cout << crosses[i].x << ", " << crosses[i].y << std::endl;
+	}*/
+	return crosses;
 }
 
 int main()
@@ -201,20 +210,23 @@ int main()
 		std::string textInputOfWires;
 		coordinate currentLoc = { 0, 0 };
 		coordinate maxLoc = { 0, 0 };
-		std::vector<std::vector<world> >map(2, std::vector<world>(20));
+		std::vector<std::vector<world> >map(2, std::vector<world>(301));
+		std::vector<std::vector<int> >stepMap(2, std::vector<int>(50));
 		std::cout << "Created array, filling with data" << std::endl;
 
 		int lineCounter = 0;
-		int objectCounter = 0;
 		while (std::getline(inputWires, textInputOfWires)) {
 			std::stringstream wiresLineStream(textInputOfWires);
 			std::string textOfWiresSmallText;
+			int objectCounter = 0;
+			currentLoc = { 0, 0 };
 
 			while (std::getline(wiresLineStream, textOfWiresSmallText, ',')) {
 				char side = textOfWiresSmallText[0];
 				textOfWiresSmallText.erase(0, 1);
 				int amount = std::stoi(textOfWiresSmallText);
 				coordinate translation = { 0, 0 };
+				coordinate old = currentLoc;
 
 				map[lineCounter][objectCounter].sideCheck = side;
 
@@ -237,87 +249,140 @@ int main()
 					system("pause");
 					break;
 				}
-				map[lineCounter][objectCounter].loc = currentLoc;
+
+				//std::wcout << old.x << ", " << old.y << std::endl;
+				//std::cout << "Run number: " << objectCounter << std::endl;
+				map[lineCounter][objectCounter].loc = old;
 				map[lineCounter][objectCounter].difference = translation;
+
+				currentLoc.x += translation.x;
+				currentLoc.y += translation.y;
 
 				objectCounter++;
 			}
 			lineCounter++;
 		}
 		std::cout << "Map read, continue to calc part..." << std::endl;
+
+		/*for (int i = 0; i < 20; i++) {
+			std::cout << map[1 * -1 + 1][i].sideCheck << std::endl;
+		}*/
+		//system("pause");
+		std::vector<std::vector<coordinate> >crosses(2, std::vector<coordinate>(50));
+		int step = 0;
 		for (int lineNumber = 0; lineNumber < 2; lineNumber++) {
-			for (int wordNumber = 0; wordNumber < 20; wordNumber++) {
-				std::cout << map[lineNumber][wordNumber].sideCheck << std::endl;
+			std::cout << "Wire 1: " << std::endl;
+			std::vector<world> newCheckedWorld = map[lineNumber * -1 + 1];
+			for (int wordNumber = 0; wordNumber < 301; wordNumber++) {
+				//std::cout << "Checking: " << map[lineNumber][wordNumber].sideCheck << std::endl;
+				//std::cout << "Numbers: " << lineNumber << ", " << wordNumber << std::endl;
 				switch (map[lineNumber][wordNumber].sideCheck)
 				{
 				case 'L':
 					for (int drawLineNumber = 0; drawLineNumber < map[lineNumber][wordNumber].difference.x * -1; drawLineNumber++) {
-						world* newWorld = &map[lineNumber][wordNumber];
-						std::vector<world>* checkWorld = &map[lineNumber * -1 + 1];
-						newWorld->loc.x -= drawLineNumber;
-						if (crossed(newWorld, checkWorld)) {
-
-							std::cout << "CROSS REEEEEE" << std::endl;
+						world newWorld = map[lineNumber][wordNumber];
+						newWorld.loc.x -= drawLineNumber;
+						std::vector<coordinate>localCoord = crossed(&newWorld, newCheckedWorld);
+						bool increaseStep = true;
+						for (int i = 0; i < localCoord.size(); i++) {
+							step++;
+							increaseStep = false;
+							crosses[lineNumber].push_back(localCoord[i]);
 						}
-						else {
-
-							std::cout << " NO CROSS REEEEEE" << std::endl;
-						}
+						stepMap[lineNumber][step]++;
 					}
 					break;
 				case 'R':
 					for (int drawLineNumber = 0; drawLineNumber < map[lineNumber][wordNumber].difference.x; drawLineNumber++) {
-						world* newWorld = &map[lineNumber][wordNumber];
-						std::vector<world>* checkWorld = &map[lineNumber * -1 + 1];
-						newWorld->loc.x += drawLineNumber;
-						if (crossed(newWorld, map[drawLineNumber])) {
-
-							std::cout << "CROSS REEEEEE" << std::endl;
+						world newWorld = map[lineNumber][wordNumber];
+						newWorld.loc.x += drawLineNumber;
+						std::vector<coordinate>localCoord = crossed(&newWorld, newCheckedWorld);
+						bool increaseStep = true;
+						for (int i = 0; i < localCoord.size(); i++) {
+							step++;
+							increaseStep = false;
+							crosses[lineNumber].push_back(localCoord[i]);
 						}
-						else {
-
-							std::cout << " NO CROSS REEEEEE" << std::endl;
-						}
+						stepMap[lineNumber][step]++;
 					}
 					break;
 				case 'D':
 					for (int drawLineNumber = 0; drawLineNumber < map[lineNumber][wordNumber].difference.y * -1; drawLineNumber++) {
-						world* newWorld = &map[lineNumber][wordNumber];
-						std::vector<world>* checkWorld = &map[lineNumber * -1 + 1];
-						newWorld->loc.y -= drawLineNumber;
-						if (crossed(newWorld, map[drawLineNumber * -1 + 1])) {
-
-							std::cout << "CROSS REEEEEE" << std::endl;
+						world newWorld = map[lineNumber][wordNumber];
+						newWorld.loc.y -= drawLineNumber;
+						std::vector<coordinate>localCoord = crossed(&newWorld, newCheckedWorld);
+						bool increaseStep = true;
+						for (int i = 0; i < localCoord.size(); i++) {
+							step++;
+							increaseStep = false;
+							crosses[lineNumber].push_back(localCoord[i]);
 						}
-						else {
-
-							std::cout << " NO CROSS REEEEEE" << std::endl;
-						}
+						stepMap[lineNumber][step]++;
 					}
 					break;
 				case 'U':
 					for (int drawLineNumber = 0; drawLineNumber < map[lineNumber][wordNumber].difference.y; drawLineNumber++) {
-						world* newWorld = &map[lineNumber][wordNumber];
-						std::vector<world>* checkWorld = &map[lineNumber * -1 + 1];
-						newWorld->loc.y += drawLineNumber;
-						if (crossed(newWorld, map[drawLineNumber * -1 + 1])) {
-
-							std::cout << "CROSS REEEEEE" << std::endl;
+						world newWorld = map[lineNumber][wordNumber];
+						newWorld.loc.y += drawLineNumber;
+						std::vector<coordinate>localCoord = crossed(&newWorld, newCheckedWorld);
+						bool increaseStep = true;
+						for (int i = 0; i < localCoord.size(); i++) {
+							step++;
+							increaseStep = false;
+							crosses[lineNumber].push_back(localCoord[i]);
 						}
-						else {
-
-							std::cout << " NO CROSS REEEEEE" << std::endl;
-						}
+						stepMap[lineNumber][step]++;
 					}
 					break;
-				default:
+				default:/*
 					std::cout << "ERROR NO COMPATIBLE CHARACTER" << std::endl;
-					system("pause");
+					system("pause");*/
 					break;
 				}
 			}
 		}
+		std::cout << "Done calculating all movements, calculating closest intersection..." << std::endl;
+		int distance = 69420;
+		int* currentCalcDistance = new int(0);
+		int* location = new int(0);
+		for (int j = 0; j < crosses.size(); j++) {
+			for (int i = 0; i < 50; i++) {
+				std::cout << j << ", " << i << std::endl;
+				std::cout << crosses[j][i].x << ", " << crosses[j][i].y << std::endl;
+				if (crosses[j][i].x < 0) {
+					*currentCalcDistance = crosses[j][i].x * -1 + crosses[j][i].y;
+				}
+				else if (crosses[j][i].y < 0) {
+					*currentCalcDistance = crosses[j][i].x + crosses[j][i].y * -1;
+				}
+				else if (crosses[j][i].x < 0 && crosses[j][i].y < 0) {
+					*currentCalcDistance = crosses[j][i].x * -1 + crosses[j][i].y * -1;
+				}
+				else {
+					*currentCalcDistance = crosses[j][i].x + crosses[j][i].y;
+				}
+
+				if (*currentCalcDistance != 0 && *currentCalcDistance < distance) {
+					std::cout << *currentCalcDistance << " is less than " << distance << std::endl;
+					distance = *currentCalcDistance;
+					*location = i;
+				}
+			}
+		}
+
+		int* calcSteps = new int(0);
+		std::cout << "Done calculating closest intersection, started calculating steps" << std::endl;
+		for (int line = 0; line < stepMap.size(); line++) {
+			std::cout << "Line: " << line << std::endl;
+			for (int number = 0; number < stepMap[line].size(); number++) {
+				std::cout << stepMap[line][number] << std::endl;
+			}
+		}
 	}
+
+	std::cout << std::endl;
+	std::cout << std::endl;
+	std::cout << std::endl;
 
 	if (DRAWMODE) {
 		std::string textInputOfWires;
@@ -344,6 +409,8 @@ int main()
 			coordinate* currentCoord = new coordinate();
 			currentCoord->x = 8000;
 			currentCoord->y = 4000;
+			/*currentCoord->x = 750;
+			currentCoord->y = 750;*/
 
 			lineNumberOfWires = 0;
 			while (std::getline(wiresLineStream, textOfWiresCodesSmallText, ',')) {

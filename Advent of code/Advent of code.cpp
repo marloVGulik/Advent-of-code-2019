@@ -271,10 +271,11 @@ int main()
 		std::vector<std::vector<coordinate> >crosses(2, std::vector<coordinate>(50));
 		int step = 0;
 		for (int lineNumber = 0; lineNumber < 2; lineNumber++) {
-			std::cout << "Wire 1: " << std::endl;
+			std::cout << "Wire " << lineNumber << ": " << std::endl;
 			std::vector<world> newCheckedWorld = map[lineNumber * -1 + 1];
+			step = 0;
 			for (int wordNumber = 0; wordNumber < 301; wordNumber++) {
-				//std::cout << "Checking: " << map[lineNumber][wordNumber].sideCheck << std::endl;
+				//std::cout << "Checking: " << map[lineNumber][wordNumber].loc.x << ", " << map[lineNumber][wordNumber].loc.y << std::endl;
 				//std::cout << "Numbers: " << lineNumber << ", " << wordNumber << std::endl;
 				switch (map[lineNumber][wordNumber].sideCheck)
 				{
@@ -342,12 +343,19 @@ int main()
 			}
 		}
 		std::cout << "Done calculating all movements, calculating closest intersection..." << std::endl;
+		for (int x = 0; x < 2; x++) {
+			for (int y = 0; y < crosses.size(); y++) {
+				std::cout << crosses[x][y].x << ", " << crosses[x][y].y << std::endl;
+			}
+		}
+		std::cout << std::endl;
+		system("pause");
 		int distance = 69420;
 		int* currentCalcDistance = new int(0);
 		int* location = new int(0);
 		for (int j = 0; j < crosses.size(); j++) {
-			for (int i = 0; i < 50; i++) {
-				std::cout << j << ", " << i << std::endl;
+			for (int i = 0; i < crosses[j].size(); i++) {
+				//std::cout << j << ", " << i << std::endl;
 				std::cout << crosses[j][i].x << ", " << crosses[j][i].y << std::endl;
 				if (crosses[j][i].x < 0) {
 					*currentCalcDistance = crosses[j][i].x * -1 + crosses[j][i].y;
@@ -370,13 +378,19 @@ int main()
 			}
 		}
 
-		int* calcSteps = new int(0);
+		std::vector<int>calcSteps;
 		std::cout << "Done calculating closest intersection, started calculating steps" << std::endl;
+		std::cout << "Adding up until " << *location << " is reached" << std::endl;
 		for (int line = 0; line < stepMap.size(); line++) {
 			std::cout << "Line: " << line << std::endl;
+			calcSteps.push_back(0);
 			for (int number = 0; number < stepMap[line].size(); number++) {
-				std::cout << stepMap[line][number] << std::endl;
+				if (stepMap[line][number] != 0 && number < *location) {
+					std::cout << stepMap[line][number] << std::endl;
+					calcSteps[line] += stepMap[line][number];
+				}
 			}
+			std::cout << "Total steps line " << line << ": " << calcSteps[line] << std::endl;
 		}
 	}
 

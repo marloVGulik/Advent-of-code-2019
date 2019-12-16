@@ -2,19 +2,19 @@
 <DEFECTS>
   <DEFECT>
     <SFA>
-      <FILEPATH>F:\Documents\Creation of stuff\C++\Advent-of-code-2019\Advent of code\</FILEPATH>
+      <FILEPATH>D:\Documents\CreationOfStuff\C++\Advent-of-code-2019\Advent of code\</FILEPATH>
       <FILENAME>Advent of code.cpp</FILENAME>
       <LINE>273</LINE>
       <COLUMN>11</COLUMN>
     </SFA>
     <DEFECTCODE>6246</DEFECTCODE>
-    <DESCRIPTION>Local declaration of 'lineNumber' hides declaration of the same name in outer scope. For additional information, see previous declaration at line '99' of 'f:\documents\creation of stuff\c++\advent-of-code-2019\advent of code\advent of code.cpp'.</DESCRIPTION>
+    <DESCRIPTION>Local declaration of 'lineNumber' hides declaration of the same name in outer scope. For additional information, see previous declaration at line '99' of 'd:\documents\creationofstuff\c++\advent-of-code-2019\advent of code\advent of code.cpp'.</DESCRIPTION>
     <FUNCTION>main</FUNCTION>
     <DECORATED>main</DECORATED>
     <FUNCLINE>74</FUNCLINE>
     <PATH>
       <SFA>
-        <FILEPATH>F:\Documents\Creation of stuff\C++\Advent-of-code-2019\Advent of code\</FILEPATH>
+        <FILEPATH>D:\Documents\CreationOfStuff\C++\Advent-of-code-2019\Advent of code\</FILEPATH>
         <FILENAME>Advent of code.cpp</FILENAME>
         <LINE>99</LINE>
         <COLUMN>5</COLUMN>
@@ -23,7 +23,7 @@
   </DEFECT>
   <DEFECT>
     <SFA>
-      <FILEPATH>F:\Documents\Creation of stuff\C++\Advent-of-code-2019\Advent of code\</FILEPATH>
+      <FILEPATH>D:\Documents\CreationOfStuff\C++\Advent-of-code-2019\Advent of code\</FILEPATH>
       <FILENAME>Advent of code.cpp</FILENAME>
       <LINE>142</LINE>
       <COLUMN>28</COLUMN>
@@ -40,103 +40,103 @@
     </CATEGORY>
     <PATH>
       <SFA>
-        <FILEPATH>F:\Documents\Creation of stuff\C++\Advent-of-code-2019\Advent of code\</FILEPATH>
+        <FILEPATH>D:\Documents\CreationOfStuff\C++\Advent-of-code-2019\Advent of code\</FILEPATH>
         <FILENAME>Advent of code.cpp</FILENAME>
         <LINE>77</LINE>
         <COLUMN>15</COLUMN>
       </SFA>
       <SFA>
-        <FILEPATH>F:\Documents\Creation of stuff\C++\Advent-of-code-2019\Advent of code\</FILEPATH>
+        <FILEPATH>D:\Documents\CreationOfStuff\C++\Advent-of-code-2019\Advent of code\</FILEPATH>
         <FILENAME>Advent of code.cpp</FILENAME>
         <LINE>78</LINE>
         <COLUMN>15</COLUMN>
       </SFA>
       <SFA>
-        <FILEPATH>F:\Documents\Creation of stuff\C++\Advent-of-code-2019\Advent of code\</FILEPATH>
+        <FILEPATH>D:\Documents\CreationOfStuff\C++\Advent-of-code-2019\Advent of code\</FILEPATH>
         <FILENAME>Advent of code.cpp</FILENAME>
         <LINE>81</LINE>
         <COLUMN>15</COLUMN>
       </SFA>
       <SFA>
-        <FILEPATH>F:\Documents\Creation of stuff\C++\Advent-of-code-2019\Advent of code\</FILEPATH>
+        <FILEPATH>D:\Documents\CreationOfStuff\C++\Advent-of-code-2019\Advent of code\</FILEPATH>
         <FILENAME>Advent of code.cpp</FILENAME>
         <LINE>82</LINE>
         <COLUMN>15</COLUMN>
       </SFA>
       <SFA>
-        <FILEPATH>F:\Documents\Creation of stuff\C++\Advent-of-code-2019\Advent of code\</FILEPATH>
+        <FILEPATH>D:\Documents\CreationOfStuff\C++\Advent-of-code-2019\Advent of code\</FILEPATH>
         <FILENAME>Advent of code.cpp</FILENAME>
         <LINE>85</LINE>
         <COLUMN>15</COLUMN>
       </SFA>
       <SFA>
-        <FILEPATH>F:\Documents\Creation of stuff\C++\Advent-of-code-2019\Advent of code\</FILEPATH>
+        <FILEPATH>D:\Documents\CreationOfStuff\C++\Advent-of-code-2019\Advent of code\</FILEPATH>
         <FILENAME>Advent of code.cpp</FILENAME>
         <LINE>86</LINE>
         <COLUMN>15</COLUMN>
       </SFA>
       <SFA>
-        <FILEPATH>F:\Documents\Creation of stuff\C++\Advent-of-code-2019\Advent of code\</FILEPATH>
+        <FILEPATH>D:\Documents\CreationOfStuff\C++\Advent-of-code-2019\Advent of code\</FILEPATH>
         <FILENAME>Advent of code.cpp</FILENAME>
         <LINE>88</LINE>
         <COLUMN>53</COLUMN>
       </SFA>
       <SFA>
-        <FILEPATH>F:\Documents\Creation of stuff\C++\Advent-of-code-2019\Advent of code\</FILEPATH>
+        <FILEPATH>D:\Documents\CreationOfStuff\C++\Advent-of-code-2019\Advent of code\</FILEPATH>
         <FILENAME>Advent of code.cpp</FILENAME>
         <LINE>94</LINE>
         <COLUMN>13</COLUMN>
       </SFA>
       <SFA>
-        <FILEPATH>F:\Documents\Creation of stuff\C++\Advent-of-code-2019\Advent of code\</FILEPATH>
+        <FILEPATH>D:\Documents\CreationOfStuff\C++\Advent-of-code-2019\Advent of code\</FILEPATH>
         <FILENAME>Advent of code.cpp</FILENAME>
         <LINE>95</LINE>
         <COLUMN>5</COLUMN>
       </SFA>
       <SFA>
-        <FILEPATH>F:\Documents\Creation of stuff\C++\Advent-of-code-2019\Advent of code\</FILEPATH>
+        <FILEPATH>D:\Documents\CreationOfStuff\C++\Advent-of-code-2019\Advent of code\</FILEPATH>
         <FILENAME>Advent of code.cpp</FILENAME>
         <LINE>96</LINE>
         <COLUMN>5</COLUMN>
       </SFA>
       <SFA>
-        <FILEPATH>F:\Documents\Creation of stuff\C++\Advent-of-code-2019\Advent of code\</FILEPATH>
+        <FILEPATH>D:\Documents\CreationOfStuff\C++\Advent-of-code-2019\Advent of code\</FILEPATH>
         <FILENAME>Advent of code.cpp</FILENAME>
         <LINE>97</LINE>
         <COLUMN>5</COLUMN>
       </SFA>
       <SFA>
-        <FILEPATH>F:\Documents\Creation of stuff\C++\Advent-of-code-2019\Advent of code\</FILEPATH>
+        <FILEPATH>D:\Documents\CreationOfStuff\C++\Advent-of-code-2019\Advent of code\</FILEPATH>
         <FILENAME>Advent of code.cpp</FILENAME>
         <LINE>99</LINE>
         <COLUMN>5</COLUMN>
       </SFA>
       <SFA>
-        <FILEPATH>F:\Documents\Creation of stuff\C++\Advent-of-code-2019\Advent of code\</FILEPATH>
+        <FILEPATH>D:\Documents\CreationOfStuff\C++\Advent-of-code-2019\Advent of code\</FILEPATH>
         <FILENAME>Advent of code.cpp</FILENAME>
         <LINE>100</LINE>
         <COLUMN>20</COLUMN>
       </SFA>
       <SFA>
-        <FILEPATH>F:\Documents\Creation of stuff\C++\Advent-of-code-2019\Advent of code\</FILEPATH>
+        <FILEPATH>D:\Documents\CreationOfStuff\C++\Advent-of-code-2019\Advent of code\</FILEPATH>
         <FILENAME>Advent of code.cpp</FILENAME>
         <LINE>118</LINE>
         <COLUMN>108</COLUMN>
       </SFA>
       <SFA>
-        <FILEPATH>F:\Documents\Creation of stuff\C++\Advent-of-code-2019\Advent of code\</FILEPATH>
+        <FILEPATH>D:\Documents\CreationOfStuff\C++\Advent-of-code-2019\Advent of code\</FILEPATH>
         <FILENAME>Advent of code.cpp</FILENAME>
         <LINE>120</LINE>
         <COLUMN>51</COLUMN>
       </SFA>
       <SFA>
-        <FILEPATH>F:\Documents\Creation of stuff\C++\Advent-of-code-2019\Advent of code\</FILEPATH>
+        <FILEPATH>D:\Documents\CreationOfStuff\C++\Advent-of-code-2019\Advent of code\</FILEPATH>
         <FILENAME>Advent of code.cpp</FILENAME>
         <LINE>122</LINE>
         <COLUMN>11</COLUMN>
       </SFA>
       <SFA>
-        <FILEPATH>F:\Documents\Creation of stuff\C++\Advent-of-code-2019\Advent of code\</FILEPATH>
+        <FILEPATH>D:\Documents\CreationOfStuff\C++\Advent-of-code-2019\Advent of code\</FILEPATH>
         <FILENAME>Advent of code.cpp</FILENAME>
         <LINE>124</LINE>
         <COLUMN>5</COLUMN>
@@ -148,19 +148,19 @@
         </KEYEVENT>
       </SFA>
       <SFA>
-        <FILEPATH>F:\Documents\Creation of stuff\C++\Advent-of-code-2019\Advent of code\</FILEPATH>
+        <FILEPATH>D:\Documents\CreationOfStuff\C++\Advent-of-code-2019\Advent of code\</FILEPATH>
         <FILENAME>Advent of code.cpp</FILENAME>
         <LINE>125</LINE>
         <COLUMN>13</COLUMN>
       </SFA>
       <SFA>
-        <FILEPATH>F:\Documents\Creation of stuff\C++\Advent-of-code-2019\Advent of code\</FILEPATH>
+        <FILEPATH>D:\Documents\CreationOfStuff\C++\Advent-of-code-2019\Advent of code\</FILEPATH>
         <FILENAME>Advent of code.cpp</FILENAME>
         <LINE>126</LINE>
         <COLUMN>5</COLUMN>
       </SFA>
       <SFA>
-        <FILEPATH>F:\Documents\Creation of stuff\C++\Advent-of-code-2019\Advent of code\</FILEPATH>
+        <FILEPATH>D:\Documents\CreationOfStuff\C++\Advent-of-code-2019\Advent of code\</FILEPATH>
         <FILENAME>Advent of code.cpp</FILENAME>
         <LINE>127</LINE>
         <COLUMN>20</COLUMN>
@@ -172,19 +172,19 @@
         </KEYEVENT>
       </SFA>
       <SFA>
-        <FILEPATH>F:\Documents\Creation of stuff\C++\Advent-of-code-2019\Advent of code\</FILEPATH>
+        <FILEPATH>D:\Documents\CreationOfStuff\C++\Advent-of-code-2019\Advent of code\</FILEPATH>
         <FILENAME>Advent of code.cpp</FILENAME>
         <LINE>137</LINE>
         <COLUMN>5</COLUMN>
       </SFA>
       <SFA>
-        <FILEPATH>F:\Documents\Creation of stuff\C++\Advent-of-code-2019\Advent of code\</FILEPATH>
+        <FILEPATH>D:\Documents\CreationOfStuff\C++\Advent-of-code-2019\Advent of code\</FILEPATH>
         <FILENAME>Advent of code.cpp</FILENAME>
         <LINE>138</LINE>
         <COLUMN>10</COLUMN>
       </SFA>
       <SFA>
-        <FILEPATH>F:\Documents\Creation of stuff\C++\Advent-of-code-2019\Advent of code\</FILEPATH>
+        <FILEPATH>D:\Documents\CreationOfStuff\C++\Advent-of-code-2019\Advent of code\</FILEPATH>
         <FILENAME>Advent of code.cpp</FILENAME>
         <LINE>138</LINE>
         <COLUMN>25</COLUMN>
@@ -196,13 +196,13 @@
         </KEYEVENT>
       </SFA>
       <SFA>
-        <FILEPATH>F:\Documents\Creation of stuff\C++\Advent-of-code-2019\Advent of code\</FILEPATH>
+        <FILEPATH>D:\Documents\CreationOfStuff\C++\Advent-of-code-2019\Advent of code\</FILEPATH>
         <FILENAME>Advent of code.cpp</FILENAME>
         <LINE>139</LINE>
         <COLUMN>11</COLUMN>
       </SFA>
       <SFA>
-        <FILEPATH>F:\Documents\Creation of stuff\C++\Advent-of-code-2019\Advent of code\</FILEPATH>
+        <FILEPATH>D:\Documents\CreationOfStuff\C++\Advent-of-code-2019\Advent of code\</FILEPATH>
         <FILENAME>Advent of code.cpp</FILENAME>
         <LINE>139</LINE>
         <COLUMN>26</COLUMN>
@@ -214,19 +214,19 @@
         </KEYEVENT>
       </SFA>
       <SFA>
-        <FILEPATH>F:\Documents\Creation of stuff\C++\Advent-of-code-2019\Advent of code\</FILEPATH>
+        <FILEPATH>D:\Documents\CreationOfStuff\C++\Advent-of-code-2019\Advent of code\</FILEPATH>
         <FILENAME>Advent of code.cpp</FILENAME>
         <LINE>140</LINE>
         <COLUMN>7</COLUMN>
       </SFA>
       <SFA>
-        <FILEPATH>F:\Documents\Creation of stuff\C++\Advent-of-code-2019\Advent of code\</FILEPATH>
+        <FILEPATH>D:\Documents\CreationOfStuff\C++\Advent-of-code-2019\Advent of code\</FILEPATH>
         <FILENAME>Advent of code.cpp</FILENAME>
         <LINE>141</LINE>
         <COLUMN>12</COLUMN>
       </SFA>
       <SFA>
-        <FILEPATH>F:\Documents\Creation of stuff\C++\Advent-of-code-2019\Advent of code\</FILEPATH>
+        <FILEPATH>D:\Documents\CreationOfStuff\C++\Advent-of-code-2019\Advent of code\</FILEPATH>
         <FILENAME>Advent of code.cpp</FILENAME>
         <LINE>141</LINE>
         <COLUMN>21</COLUMN>
@@ -238,13 +238,13 @@
         </KEYEVENT>
       </SFA>
       <SFA>
-        <FILEPATH>F:\Documents\Creation of stuff\C++\Advent-of-code-2019\Advent of code\</FILEPATH>
+        <FILEPATH>D:\Documents\CreationOfStuff\C++\Advent-of-code-2019\Advent of code\</FILEPATH>
         <FILENAME>Advent of code.cpp</FILENAME>
         <LINE>142</LINE>
         <COLUMN>26</COLUMN>
       </SFA>
       <SFA>
-        <FILEPATH>F:\Documents\Creation of stuff\C++\Advent-of-code-2019\Advent of code\</FILEPATH>
+        <FILEPATH>D:\Documents\CreationOfStuff\C++\Advent-of-code-2019\Advent of code\</FILEPATH>
         <FILENAME>Advent of code.cpp</FILENAME>
         <LINE>142</LINE>
         <COLUMN>28</COLUMN>

@@ -205,13 +205,13 @@ int main()
 	bool CALCMODE = true;
 	bool DRAWMODE = false;
 
-	// TEST:
+	// CALCMODE:
 	if (CALCMODE) {
 		std::string textInputOfWires;
 		coordinate currentLoc = { 0, 0 };
 		coordinate maxLoc = { 0, 0 };
 		std::vector<std::vector<world> >map(2, std::vector<world>(301));
-		std::vector<std::vector<int> >stepMap(2, std::vector<int>(50));
+		std::vector<std::vector<int> >stepMap(2, std::vector<int>(301));
 		std::cout << "Created array, filling with data" << std::endl;
 
 		int lineCounter = 0;
@@ -255,6 +255,9 @@ int main()
 				map[lineCounter][objectCounter].loc = old;
 				map[lineCounter][objectCounter].difference = translation;
 
+				std::wcout << "Adding " << amount << " to map " << lineCounter;
+				stepMap[lineCounter][objectCounter] = amount;
+
 				currentLoc.x += translation.x;
 				currentLoc.y += translation.y;
 
@@ -264,11 +267,21 @@ int main()
 		}
 		std::cout << "Map read, continue to calc part..." << std::endl;
 
-		/*for (int i = 0; i < 20; i++) {
-			std::cout << map[1 * -1 + 1][i].sideCheck << std::endl;
+		/*for (int j = 0; j < 2; j++) {
+			std::cout << "Wire " << j << std::endl;
+			for (int i = 0; i < map[j].size(); i++) {
+				if (i != 0) {
+					if (map[j][i].loc.x != 0 && map[j][i].loc.y != 0) {
+						std::cout << map[j][i].loc.x << ", " << map[j][i].loc.y << std::endl;
+					}
+				}
+				else {
+					std::cout << map[j][i].loc.x << ", " << map[j][i].loc.y << std::endl;
+				}
+			}
 		}*/
 		//system("pause");
-		std::vector<std::vector<coordinate> >crosses(2, std::vector<coordinate>(50));
+		std::vector<std::vector<coordinate> >crosses(2, std::vector<coordinate>());
 		int step = 0;
 		for (int lineNumber = 0; lineNumber < 2; lineNumber++) {
 			std::cout << "Wire " << lineNumber << ": " << std::endl;
@@ -286,11 +299,12 @@ int main()
 						std::vector<coordinate>localCoord = crossed(&newWorld, newCheckedWorld);
 						bool increaseStep = true;
 						for (int i = 0; i < localCoord.size(); i++) {
-							step++;
-							increaseStep = false;
-							crosses[lineNumber].push_back(localCoord[i]);
+							if (localCoord[i].x != 0 && localCoord[i].y != 0 && increaseStep) {
+								step++;
+								increaseStep = false;
+								crosses[lineNumber].push_back(localCoord[i]);
+							}
 						}
-						stepMap[lineNumber][step]++;
 					}
 					break;
 				case 'R':
@@ -300,11 +314,12 @@ int main()
 						std::vector<coordinate>localCoord = crossed(&newWorld, newCheckedWorld);
 						bool increaseStep = true;
 						for (int i = 0; i < localCoord.size(); i++) {
-							step++;
-							increaseStep = false;
-							crosses[lineNumber].push_back(localCoord[i]);
+							if (localCoord[i].x != 0 && localCoord[i].y != 0 && increaseStep) {
+								step++;
+								increaseStep = false;
+								crosses[lineNumber].push_back(localCoord[i]);
+							}
 						}
-						stepMap[lineNumber][step]++;
 					}
 					break;
 				case 'D':
@@ -314,11 +329,12 @@ int main()
 						std::vector<coordinate>localCoord = crossed(&newWorld, newCheckedWorld);
 						bool increaseStep = true;
 						for (int i = 0; i < localCoord.size(); i++) {
-							step++;
-							increaseStep = false;
-							crosses[lineNumber].push_back(localCoord[i]);
+							if (localCoord[i].x != 0 && localCoord[i].y != 0 && increaseStep) {
+								step++;
+								increaseStep = false;
+								crosses[lineNumber].push_back(localCoord[i]);
+							}
 						}
-						stepMap[lineNumber][step]++;
 					}
 					break;
 				case 'U':
@@ -328,11 +344,12 @@ int main()
 						std::vector<coordinate>localCoord = crossed(&newWorld, newCheckedWorld);
 						bool increaseStep = true;
 						for (int i = 0; i < localCoord.size(); i++) {
-							step++;
-							increaseStep = false;
-							crosses[lineNumber].push_back(localCoord[i]);
+							if (localCoord[i].x != 0 && localCoord[i].y != 0 && increaseStep) {
+								step++;
+								increaseStep = false;
+								crosses[lineNumber].push_back(localCoord[i]);
+							}
 						}
-						stepMap[lineNumber][step]++;
 					}
 					break;
 				default:/*
@@ -343,17 +360,18 @@ int main()
 			}
 		}
 		std::cout << "Done calculating all movements, calculating closest intersection..." << std::endl;
-		for (int x = 0; x < 2; x++) {
+		/*for (int x = 0; x < 2; x++) {
 			for (int y = 0; y < crosses.size(); y++) {
 				std::cout << crosses[x][y].x << ", " << crosses[x][y].y << std::endl;
 			}
-		}
+		}*/
 		std::cout << std::endl;
-		system("pause");
+		//system("pause");
 		int distance = 69420;
 		int* currentCalcDistance = new int(0);
-		int* location = new int(0);
+		std::vector<int> location(2);
 		for (int j = 0; j < crosses.size(); j++) {
+			std::wcout << "Line number: " << j << std::endl;
 			for (int i = 0; i < crosses[j].size(); i++) {
 				//std::cout << j << ", " << i << std::endl;
 				std::cout << crosses[j][i].x << ", " << crosses[j][i].y << std::endl;
@@ -371,27 +389,30 @@ int main()
 				}
 
 				if (*currentCalcDistance != 0 && *currentCalcDistance < distance) {
-					std::cout << *currentCalcDistance << " is less than " << distance << std::endl;
+					std::cout << *currentCalcDistance << " is less than " << distance << ", adding " << i << " to distance" << std::endl;
 					distance = *currentCalcDistance;
-					*location = i;
+					location[j] = i + 1;
 				}
 			}
 		}
 
 		std::vector<int>calcSteps;
 		std::cout << "Done calculating closest intersection, started calculating steps" << std::endl;
-		std::cout << "Adding up until " << *location << " is reached" << std::endl;
+		std::cout << "Adding up until " << location[0] << " for wire 0, and " << location[1] << " for wire 1 is reached" << std::endl;
+		int* totalsteps = new int(0);
 		for (int line = 0; line < stepMap.size(); line++) {
 			std::cout << "Line: " << line << std::endl;
 			calcSteps.push_back(0);
 			for (int number = 0; number < stepMap[line].size(); number++) {
-				if (stepMap[line][number] != 0 && number < *location) {
+				if (stepMap[line][number] != 0 && number < location[line]) {
 					std::cout << stepMap[line][number] << std::endl;
 					calcSteps[line] += stepMap[line][number];
 				}
 			}
 			std::cout << "Total steps line " << line << ": " << calcSteps[line] << std::endl;
 		}
+		*totalsteps = calcSteps[0] + calcSteps[1];
+		std::cout << "Total steps: " << *totalsteps << std::endl;
 	}
 
 	std::cout << std::endl;

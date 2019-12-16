@@ -9,6 +9,7 @@ public:
 	coordinate loc = {0, 0};
 	coordinate difference = {0, 0};
 	char sideCheck = ' ';
+	int steps = 0;
 
 	int wireNumber = 0;
 	bool isCrossed = false;
@@ -255,8 +256,20 @@ int main()
 				map[lineCounter][objectCounter].loc = old;
 				map[lineCounter][objectCounter].difference = translation;
 
+				if (objectCounter - 1 > 0) {
+					map[lineCounter][objectCounter].steps = map[lineCounter][objectCounter - 1].steps;
+				}
+				else {
+					map[lineCounter][objectCounter].steps = amount;
+				}
+
 				std::wcout << "Adding " << amount << " to map " << lineCounter;
-				stepMap[lineCounter][objectCounter] = amount;
+				if (objectCounter - 1 >= 0) {
+					stepMap[lineCounter][objectCounter] = stepMap[lineCounter][objectCounter - 1] + amount;
+				}
+				else {	
+					stepMap[lineCounter][objectCounter] += amount;
+				}
 
 				currentLoc.x += translation.x;
 				currentLoc.y += translation.y;
@@ -282,6 +295,7 @@ int main()
 		}*/
 		//system("pause");
 		std::vector<std::vector<coordinate> >crosses(2, std::vector<coordinate>());
+		std::vector<coordinate> crossLocations;
 		int step = 0;
 		for (int lineNumber = 0; lineNumber < 2; lineNumber++) {
 			std::cout << "Wire " << lineNumber << ": " << std::endl;
@@ -299,10 +313,10 @@ int main()
 						std::vector<coordinate>localCoord = crossed(&newWorld, newCheckedWorld);
 						bool increaseStep = true;
 						for (int i = 0; i < localCoord.size(); i++) {
+							crosses[lineNumber].push_back(localCoord[i]);
 							if (localCoord[i].x != 0 && localCoord[i].y != 0 && increaseStep) {
 								step++;
 								increaseStep = false;
-								crosses[lineNumber].push_back(localCoord[i]);
 							}
 						}
 					}
@@ -314,10 +328,10 @@ int main()
 						std::vector<coordinate>localCoord = crossed(&newWorld, newCheckedWorld);
 						bool increaseStep = true;
 						for (int i = 0; i < localCoord.size(); i++) {
+							crosses[lineNumber].push_back(localCoord[i]);
 							if (localCoord[i].x != 0 && localCoord[i].y != 0 && increaseStep) {
 								step++;
 								increaseStep = false;
-								crosses[lineNumber].push_back(localCoord[i]);
 							}
 						}
 					}
@@ -329,10 +343,10 @@ int main()
 						std::vector<coordinate>localCoord = crossed(&newWorld, newCheckedWorld);
 						bool increaseStep = true;
 						for (int i = 0; i < localCoord.size(); i++) {
+							crosses[lineNumber].push_back(localCoord[i]);
 							if (localCoord[i].x != 0 && localCoord[i].y != 0 && increaseStep) {
 								step++;
 								increaseStep = false;
-								crosses[lineNumber].push_back(localCoord[i]);
 							}
 						}
 					}
@@ -344,10 +358,10 @@ int main()
 						std::vector<coordinate>localCoord = crossed(&newWorld, newCheckedWorld);
 						bool increaseStep = true;
 						for (int i = 0; i < localCoord.size(); i++) {
+							crosses[lineNumber].push_back(localCoord[i]);
 							if (localCoord[i].x != 0 && localCoord[i].y != 0 && increaseStep) {
 								step++;
 								increaseStep = false;
-								crosses[lineNumber].push_back(localCoord[i]);
 							}
 						}
 					}
@@ -395,24 +409,31 @@ int main()
 				}
 			}
 		}
-
-		std::vector<int>calcSteps;
-		std::cout << "Done calculating closest intersection, started calculating steps" << std::endl;
-		std::cout << "Adding up until " << location[0] << " for wire 0, and " << location[1] << " for wire 1 is reached" << std::endl;
-		int* totalsteps = new int(0);
-		for (int line = 0; line < stepMap.size(); line++) {
-			std::cout << "Line: " << line << std::endl;
-			calcSteps.push_back(0);
-			for (int number = 0; number < stepMap[line].size(); number++) {
-				if (stepMap[line][number] != 0 && number < location[line]) {
-					std::cout << stepMap[line][number] << std::endl;
-					calcSteps[line] += stepMap[line][number];
+		
+		std::cout << "Manhattan distance: " << distance << std::endl;
+		std::cout << "Done calculating closest intersection, creating linker array..." << std::endl;
+		std::vector<coordinate> linker;
+		for (int x = 0; x < crosses[0].size(); x++) {
+			for (int y = 0; y < crosses[0].size(); y++) {
+				if (crosses[0][x].x == crosses[1][y].x && crosses[0][x].y == crosses[1][y].y) {
+					linker.push_back({ x, y });
 				}
 			}
-			std::cout << "Total steps line " << line << ": " << calcSteps[line] << std::endl;
 		}
-		*totalsteps = calcSteps[0] + calcSteps[1];
-		std::cout << "Total steps: " << *totalsteps << std::endl;
+
+		for (int x = 0; x < linker.size(); x++) {
+			std::cout << linker[x].x << ", " << linker[x].y << std::endl;
+		}
+
+		std::cout << "started calculating steps..." << std::endl;
+		//std::vector<int>calcSteps;
+		for (int crossLoc = 0; crossLoc < linker.size(); crossLoc++) {
+			coordinate firstArrayCheck = crosses[0][linker[crossLoc].x];
+			coordinate secondArrayCheck = crosses[1][linker[crossLoc].y];
+			for (int mapCheckLoc = 0; mapCheckLoc < 301; mapCheckLoc++) {
+				
+			}
+		}
 	}
 
 	std::cout << std::endl;

@@ -263,7 +263,7 @@ int main()
 					map[lineCounter][objectCounter].steps = amount;
 				}
 
-				std::wcout << "Adding " << amount << " to map " << lineCounter;
+				std::wcout << "Adding " << amount << " to map " << lineCounter << std::endl;
 				if (objectCounter - 1 >= 0) {
 					stepMap[lineCounter][objectCounter] = stepMap[lineCounter][objectCounter - 1] + amount;
 				}
@@ -295,7 +295,7 @@ int main()
 		}*/
 		//system("pause");
 		std::vector<std::vector<coordinate> >crosses(2, std::vector<coordinate>());
-		std::vector<coordinate> crossLocations;
+		std::vector<std::vector<int> >crossLocs(2, std::vector<int>());
 		int step = 0;
 		for (int lineNumber = 0; lineNumber < 2; lineNumber++) {
 			std::cout << "Wire " << lineNumber << ": " << std::endl;
@@ -314,11 +314,9 @@ int main()
 						bool increaseStep = true;
 						for (int i = 0; i < localCoord.size(); i++) {
 							crosses[lineNumber].push_back(localCoord[i]);
-							if (localCoord[i].x != 0 && localCoord[i].y != 0 && increaseStep) {
-								step++;
-								increaseStep = false;
-							}
+							crossLocs[lineNumber].push_back(step);
 						}
+						step++;
 					}
 					break;
 				case 'R':
@@ -329,11 +327,9 @@ int main()
 						bool increaseStep = true;
 						for (int i = 0; i < localCoord.size(); i++) {
 							crosses[lineNumber].push_back(localCoord[i]);
-							if (localCoord[i].x != 0 && localCoord[i].y != 0 && increaseStep) {
-								step++;
-								increaseStep = false;
-							}
+							crossLocs[lineNumber].push_back(step);
 						}
+						step++;
 					}
 					break;
 				case 'D':
@@ -344,11 +340,9 @@ int main()
 						bool increaseStep = true;
 						for (int i = 0; i < localCoord.size(); i++) {
 							crosses[lineNumber].push_back(localCoord[i]);
-							if (localCoord[i].x != 0 && localCoord[i].y != 0 && increaseStep) {
-								step++;
-								increaseStep = false;
-							}
+							crossLocs[lineNumber].push_back(step);
 						}
+						step++;
 					}
 					break;
 				case 'U':
@@ -359,11 +353,9 @@ int main()
 						bool increaseStep = true;
 						for (int i = 0; i < localCoord.size(); i++) {
 							crosses[lineNumber].push_back(localCoord[i]);
-							if (localCoord[i].x != 0 && localCoord[i].y != 0 && increaseStep) {
-								step++;
-								increaseStep = false;
-							}
+							crossLocs[lineNumber].push_back(step);
 						}
+						step++;
 					}
 					break;
 				default:/*
@@ -373,6 +365,7 @@ int main()
 				}
 			}
 		}
+		std::cout << step << " steps" << std::endl;
 		std::cout << "Done calculating all movements, calculating closest intersection..." << std::endl;
 		/*for (int x = 0; x < 2; x++) {
 			for (int y = 0; y < crosses.size(); y++) {
@@ -427,11 +420,17 @@ int main()
 
 		std::cout << "started calculating steps..." << std::endl;
 		//std::vector<int>calcSteps;
-		for (int crossLoc = 0; crossLoc < linker.size(); crossLoc++) {
-			coordinate firstArrayCheck = crosses[0][linker[crossLoc].x];
-			coordinate secondArrayCheck = crosses[1][linker[crossLoc].y];
+		int* totalStep = new int(69420);
+		for (int crossLocation = 0; crossLocation < linker.size(); crossLocation++) {
+			coordinate firstArrayCheck = crosses[0][linker[crossLocation].x];
+			coordinate secondArrayCheck = crosses[1][linker[crossLocation].y];
+			int firstAmount = crossLocs[0][linker[crossLocation].x];
+			int secondAmount = crossLocs[1][linker[crossLocation].y];
 			for (int mapCheckLoc = 0; mapCheckLoc < 301; mapCheckLoc++) {
-				
+				if (firstAmount + secondAmount < *totalStep && firstAmount != 0 && secondAmount != 0) {
+					*totalStep = firstAmount + secondAmount;
+					std::cout << "Total steps: " << *totalStep << std::endl;
+				}
 			}
 		}
 	}

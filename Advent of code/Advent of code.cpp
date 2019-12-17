@@ -618,23 +618,30 @@ int main()
 	int totalPasswordValue = 0;
 	while (currentCheckNumber < MAX_NUMBER) {
 		std::vector<int> checkNumbers = numbersToArray(currentCheckNumber);
-		int sameNumberAmount = 0;
+		std::vector<coordinate> doubleDigitList;
 		bool doubleDigit = false;
-		bool isLessThan = false;
+
 
 		for (int i = 0; i < 6; i++) {
-			if(i < 5 && checkNumbers[i] > checkNumbers[i + 1]) std::cout << "Is lower than expected; raising number..." << std::endl;
+			//if(i < 5 && checkNumbers[i] > checkNumbers[i + 1]) std::cout << "Is lower than expected; raising number..." << std::endl;
 			while (i < 5 && checkNumbers[i] > checkNumbers[i + 1]) {
 				currentCheckNumber++;
 				checkNumbers = numbersToArray(currentCheckNumber);
 			}
-			if (i < 5 && checkNumbers[i] == checkNumbers[i + 1]) doubleDigit = true;/*
-			for (int j = 0; j < 4; j++) {
-				if (checkNumbers[i] == checkNumbers[j] && j == i - 1 && j == i + 1) {
-
-				}
-			}*/
-			
+			//if (i < 5 && checkNumbers[i] == checkNumbers[i + 1]) doubleDigit = true;
+			bool addNew = true;
+		}
+		std::cout << currentCheckNumber << std::endl;
+		for (int i = 0; i < doubleDigitList.size(); i++) {
+			//std::cout << doubleDigitList[i].x << " is more than once: " << doubleDigitList[i].y << std::endl;
+			if (doubleDigitList[i].y > 5) {
+				std::cout << "Critical counting error!" << std::endl;
+				system("pause");
+			}
+			if (doubleDigitList[i].y < 2) {
+				std::cout << doubleDigitList[i].x << " is double!" << std::endl;
+				doubleDigit = true;
+			}
 		}
 		if (doubleDigit && currentCheckNumber < MAX_NUMBER) {
 			notFound = false;
@@ -646,7 +653,7 @@ int main()
 	std::cout << "Total password amount: " << totalPasswordValue << std::endl;
 
 	
-
+	system("pause");
 	inputFile.close();
 	inputOfCodes.close();
 	outputFile.close();

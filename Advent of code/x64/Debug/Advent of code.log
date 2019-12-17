@@ -1,5 +1,5 @@
 ﻿  Advent of code.cpp
-D:\Documents\CreationOfStuff\C++\Advent-of-code-2019\Advent of code\Advent of code.cpp(1,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
-D:\Documents\CreationOfStuff\C++\Advent-of-code-2019\Advent of code\Advent of code.cpp(300): warning C6246: Local declaration of 'lineNumber' hides declaration of the same name in outer scope. For additional information, see previous declaration at line '100' of 'd:\documents\creationofstuff\c++\advent-of-code-2019\advent of code\advent of code.cpp'.: Lines: 100
-D:\Documents\CreationOfStuff\C++\Advent-of-code-2019\Advent of code\Advent of code.cpp(143): warning C6001: Using uninitialized memory 'defaultActionArray'.: Lines: 78, 79, 82, 83, 86, 87, 89, 95, 96, 97, 98, 100, 101, 119, 121, 123, 125, 126, 127, 128, 138, 139, 140, 141, 142, 143
-  Advent of code.vcxproj -> D:\Documents\CreationOfStuff\C++\Advent-of-code-2019\x64\Debug\Advent of code.exe
+F:\Documents\Creation of stuff\C++\Advent-of-code-2019\Advent of code\Advent of code.cpp(1,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+F:\Documents\Creation of stuff\C++\Advent-of-code-2019\Advent of code\Advent of code.cpp(308): warning C6246: Local declaration of 'lineNumber' hides declaration of the same name in outer scope. For additional information, see previous declaration at line '108' of 'f:\documents\creation of stuff\c++\advent-of-code-2019\advent of code\advent of code.cpp'.: Lines: 108
+F:\Documents\Creation of stuff\C++\Advent-of-code-2019\Advent of code\Advent of code.cpp(151): warning C6001: Using uninitialized memory 'defaultActionArray'.: Lines: 86, 87, 90, 91, 94, 95, 97, 103, 104, 105, 106, 108, 109, 127, 129, 131, 133, 134, 135, 136, 146, 147, 148, 149, 150, 151
+  Advent of code.vcxproj -> F:\Documents\Creation of stuff\C++\Advent-of-code-2019\x64\Debug\Advent of code.exe

@@ -15,6 +15,14 @@ public:
 	bool isCrossed = false;
 	bool isX = false;
 };
+std::vector<int> numbersToArray(int number) {
+	std::vector<int> numberOutput(6);
+	for (int i = 5; i > -1; i--) {
+		numberOutput[i] = number % 10;
+		number /= 10;
+	}
+	return numberOutput;
+}
 
 std::vector<coordinate> crossed(world* hostWorld, std::vector<world> &checkedWorld) {
 	//std::cout << "Checking: " << hostWorld->loc.x << ", " << hostWorld->loc.y << std::endl; // FUN LINE XD
@@ -203,7 +211,7 @@ int main()
 	}
 
 	// DAY THREE:
-	bool CALCMODE = true;
+	bool CALCMODE = false;
 	bool DRAWMODE = false;
 
 	// CALCMODE:
@@ -599,6 +607,44 @@ int main()
 		system("pause");
 		// Check for side (Wires are always 1D, they don't change sides. if it's not working try the MAP approach to this problem (map with coordinates, can check if coordinate is already set or not))
 	}
+
+	std::cout << "DONE WITH DAY 3, MOVING ON TO DAY 4" << std::endl;
+	// DAY 4
+	int currentCheckNumber = 347312;
+	int MIN_NUMBER = 347312;
+	int MAX_NUMBER = 805915;
+
+	bool notFound = true;
+	int totalPasswordValue = 0;
+	while (currentCheckNumber < MAX_NUMBER) {
+		std::vector<int> checkNumbers = numbersToArray(currentCheckNumber);
+		int sameNumberAmount = 0;
+		bool doubleDigit = false;
+		bool isLessThan = false;
+
+		for (int i = 0; i < 6; i++) {
+			if(i < 5 && checkNumbers[i] > checkNumbers[i + 1]) std::cout << "Is lower than expected; raising number..." << std::endl;
+			while (i < 5 && checkNumbers[i] > checkNumbers[i + 1]) {
+				currentCheckNumber++;
+				checkNumbers = numbersToArray(currentCheckNumber);
+			}
+			if (i < 5 && checkNumbers[i] == checkNumbers[i + 1]) doubleDigit = true;/*
+			for (int j = 0; j < 4; j++) {
+				if (checkNumbers[i] == checkNumbers[j] && j == i - 1 && j == i + 1) {
+
+				}
+			}*/
+			
+		}
+		if (doubleDigit && currentCheckNumber < MAX_NUMBER) {
+			notFound = false;
+			totalPasswordValue++;
+			std::cout << currentCheckNumber << std::endl;
+		}
+		currentCheckNumber++;
+	}
+	std::cout << "Total password amount: " << totalPasswordValue << std::endl;
+
 	
 
 	inputFile.close();

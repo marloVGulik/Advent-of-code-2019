@@ -621,28 +621,48 @@ int main()
 		std::vector<coordinate> doubleDigitList;
 		bool doubleDigit = false;
 
-
+		std::cout << "Checking: " << currentCheckNumber << std::endl;
 		for (int i = 0; i < 6; i++) {
 			//if(i < 5 && checkNumbers[i] > checkNumbers[i + 1]) std::cout << "Is lower than expected; raising number..." << std::endl;
 			while (i < 5 && checkNumbers[i] > checkNumbers[i + 1]) {
 				currentCheckNumber++;
 				checkNumbers = numbersToArray(currentCheckNumber);
 			}
-			//if (i < 5 && checkNumbers[i] == checkNumbers[i + 1]) doubleDigit = true;
+			bool localDoubleDigit = false;
+			std::cout << "Letter: " << i << ": ";
+			if (0 < i && i < 4) {
+				if (checkNumbers[i] == checkNumbers[i + 1] && checkNumbers[i] != checkNumbers[i + 2] && checkNumbers[i] != checkNumbers[i - 1]) {
+					doubleDigit = true;
+					std::cout << "1, ";
+				}
+			}
+			else if (i == 0) {
+				if (checkNumbers[i] == checkNumbers[i + 1] && checkNumbers[i] != checkNumbers[i + 2]) {
+					doubleDigit = true;
+					std::cout << "2, ";
+				}
+			}
+			else if (i == 5) {
+				if (checkNumbers[i] == checkNumbers[i - 1] && checkNumbers[i] != checkNumbers[i - 2]) {
+					doubleDigit = true;
+					std::cout << "3, ";
+				}
+			}
+			std::cout << std::endl;
 			bool addNew = true;
 		}
-		std::cout << currentCheckNumber << std::endl;
-		for (int i = 0; i < doubleDigitList.size(); i++) {
-			//std::cout << doubleDigitList[i].x << " is more than once: " << doubleDigitList[i].y << std::endl;
-			if (doubleDigitList[i].y > 5) {
-				std::cout << "Critical counting error!" << std::endl;
-				system("pause");
-			}
-			if (doubleDigitList[i].y < 2) {
-				std::cout << doubleDigitList[i].x << " is double!" << std::endl;
-				doubleDigit = true;
-			}
-		}
+		//std::cout << currentCheckNumber << std::endl;
+		//for (int i = 0; i < doubleDigitList.size(); i++) {
+		//	//std::cout << doubleDigitList[i].x << " is more than once: " << doubleDigitList[i].y << std::endl;
+		//	if (doubleDigitList[i].y > 5) {
+		//		std::cout << "Critical counting error!" << std::endl;
+		//		system("pause");
+		//	}
+		//	if (doubleDigitList[i].y < 2) {
+		//		std::cout << doubleDigitList[i].x << " is double!" << std::endl;
+		//		doubleDigit = true;
+		//	}
+		//}
 		if (doubleDigit && currentCheckNumber < MAX_NUMBER) {
 			notFound = false;
 			totalPasswordValue++;
